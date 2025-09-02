@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pal Pro CRT Portal</title>
+  <style>
+    @font-face {
+      font-family: 'DOSFont';
+      src: url('https://fonts.cdnfonts.com/s/17363/PerfectDOSVGA437.woff') format('woff');
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      font-family: 'DOSFont', monospace;
+      overflow: hidden;
+    }
+
+    .crt {
+      position: absolute;
+      top: 80px;
+      left: 80px;
+      width: 800px;
+      height: 600px;
+      border: 4px solid #c0c0c0;
+      background: #111;
+      box-shadow: 0 0 30px #0ff;
+      color: #0ff;
+      resize: both;
+      overflow: hidden;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    .title-bar {
+      background: linear-gradient(to right, #c0c0c0, #808080);
+      padding: 6px;
+      cursor: move;
+      font-weight: bold;
+      color: #000;
+      border-bottom: 2px solid #999;
+      font-size: 14px;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 30px);
+      border: none;
+      background: #fff;
+    }
+
+    .scanlines {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 255, 255, 0.03),
+        rgba(0, 255, 255, 0.03) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      z-index: 1;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      100% { opacity: 0.97; }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay>
+    <source src="https://files.catbox.moe/9zqk0g.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="scanlines"></div>
+
+  <div class="crt" id="win98">
+    <div class="title-bar">Pal Pro - Windows 98</div>
+    <iframe src="https://palhandler123forwebview.free.nf/BoldExperimental.html"></iframe>
+  </div>
+
+  <script>
+    const win = document.getElementById('win98');
+    const bar = win.querySelector('.title-bar');
+    let isDragging = false, offsetX, offsetY;
+
+    bar.addEventListener('mousedown', e => {
+      isDragging = true;
+      offsetX = e.clientX - win.offsetLeft;
+      offsetY = e.clientY - win.offsetTop;
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        win.style.left = `${e.clientX - offsetX}px`;
+        win.style.top = `${e.clientY - offsetY}px`;
+      }
+    });
+  </script>
+</body>
+</html>
