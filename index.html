@@ -6,23 +6,82 @@
   <style>
     body {
       font-family: Consolas, monospace;
-      background-color: #f9f9f9;
-      color: #333;
+      margin: 0;
       padding: 40px;
+      color: #fff;
+      background: #0f0f0f;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
     }
+
+    canvas#background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    h1, p {
+      position: relative;
+      z-index: 2;
+    }
+
     a.download-link {
-      color: blue;
+      color: #00ffff;
       text-decoration: none;
       font-weight: bold;
     }
+
     a.download-link:hover {
       text-decoration: underline;
+      color: #ff00ff;
     }
   </style>
 </head>
 <body>
+  <canvas id="background"></canvas>
+
   <h1>Hello, download pal-rust here</h1>
   <p><a class="download-link" href="https://github.com/Tester309/Pal-rust/releases/download/pal-rust-1/Pal_Labs.exe">download here</a></p>
   <p><a class="download-link" href="https://www.virustotal.com/gui/file/29565ab87ad0dfa3a6d934b8236dfc388b83a6ea66a89395cc6c8cb2e08637d0" target="_blank">scan on VirusTotal</a></p>
+
+  <script>
+    const canvas = document.getElementById('background');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
 </body>
 </html>
