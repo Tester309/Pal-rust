@@ -1,0 +1,16 @@
+use wry::application::event::*;
+use wry::application::event_loop::{ControlFlow, EventLoop};
+use wry::application::window::WindowBuilder;
+use wry::webview::WebViewBuilder;
+
+fn main() -> wry::Result<()> {
+    let event_loop = EventLoop::new();
+    let window = WindowBuilder::new().with_title("Pal Labs App").build(&event_loop)?;
+    let _webview = WebViewBuilder::new(window)?
+        .with_url("https://palhandler123forwebview.free.nf/BoldExperimental.html?i=1")?
+        .build()?;
+
+    event_loop.run(move |_, _, control_flow| {
+        *control_flow = ControlFlow::Wait;
+    });
+}
